@@ -1,37 +1,48 @@
 const User = require("../models/Users");
 
 class UserController {
-    async insert(req, res) {
-        const user = await User.create(req.body)
+  async insert(req, res) {
+    const user = await User.create(req.body);
 
-        const formattedData = {
-            id: user.id,
-            name: user.name
-        }
+    const formattedData = {
+      id: user.id,
+      name: user.name,
+    };
 
-        return res.status(200).json(formattedData);
+    return res.status(200).json(formattedData);
+  }
+
+  async getUser(req, res) {
+    const { id } = req.params;
+
+    const user = await User.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (!user) {
+      return res.status(404).send({ message: "User not found!" });
     }
 
-    async getUser(req, res) {
+    const formattedData = {
+      id: user.id,
+      name: user.name,
+    };
 
-        const { id } = req.params;
+    return res.status(200).json(formattedData);
+  }
 
-        const user = await User.findOne({
-            where: {
-                id: id
-            }
-        })
-        if (!user) {
-            return res.status(404).send({ message: "User not found!" });
-        }
+  async getAllUsers(req, res) {
+    const users = await User.findAll({
+      raw: true,
+      nest: true,
+      attributes: ["id", "name"],
+      limit: 100,
+      order: [["name", "ASC"]],
+    });
 
-        const formattedData = {
-            id: user.id,
-            name: user.name
-        }
-
-        return res.status(200).json(formattedData);
-    }
+    return res.status(200).json(users);
+  }
 }
 
 module.exports = new UserController();
