@@ -1,18 +1,18 @@
-const express = require("express");
-const routes = require("./routes");
+const express = require('express');
+const routes = require('./routes');
 require("./database");
 
-const app = express();
-var http = require("http").Server(app);
-const io = require("socket.io")(http);
-const cors = require("cors");
+const application = express();
+var server = require('http').Server(application);
+const io = require('socket.io')(server);
+const cors = require('cors');
 
 class App {
   constructor() {
     this.server = express();
     this.middlewares();
     this.routes();
-    this.httpServer = http;
+    this.httpServer = server;
   }
 
   middlewares() {
@@ -23,6 +23,7 @@ class App {
 
       return next();
     });
+
     this.server.use(cors());
   }
 
@@ -31,4 +32,4 @@ class App {
   }
 }
 
-module.exports = new App().server;
+module.exports = new App().httpServer;

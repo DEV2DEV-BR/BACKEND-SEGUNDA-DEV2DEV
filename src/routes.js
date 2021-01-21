@@ -4,15 +4,12 @@ const MessageController = require("./apps/controllers/MessageController");
 
 const routes = new Router();
 
+
 routes.get("/health", (req, res) => {
   const { io } = req;
-
-  io.on("connection", () => {
-    console.log("a user connected");
-  });
-
   return res.send({ message: "Connect Success" });
 });
+
 
 routes.post("/user", UserController.insert);
 routes.get("/user/:id", UserController.getUser);
