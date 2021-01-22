@@ -1,9 +1,10 @@
-const express = require('express');
-const routes = require('./routes');
 require("./database");
+const routes = require('./routes');
 
-const application = express();
-var server = require('http').Server(application);
+const express = require('express');
+const app = express();
+app.use(routes)
+var server = require('http').Server(app);
 const io = require('socket.io')(server);
 const cors = require('cors');
 
