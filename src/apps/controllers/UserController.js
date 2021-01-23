@@ -7,6 +7,7 @@ class UserController {
     const formattedData = {
       id: user.id,
       name: user.name,
+      email: user.email,
     };
 
     return res.status(200).json(formattedData);
@@ -27,6 +28,7 @@ class UserController {
     const formattedData = {
       id: user.id,
       name: user.name,
+      email: user.email,
     };
 
     return res.status(200).json(formattedData);
@@ -36,7 +38,7 @@ class UserController {
     const users = await User.findAll({
       raw: true,
       nest: true,
-      attributes: ["id", "name"],
+      attributes: ["id", "name", "email"],
       limit: 100,
       order: [["name", "ASC"]],
     });

@@ -6,6 +6,8 @@ class Message extends Model {
         super.init(
             {
                 text: Sequelize.STRING,
+                user_destination: Sequelize.INTEGER,
+                user_id: Sequelize.INTEGER
             },
             {
                 sequelize,

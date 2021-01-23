@@ -6,7 +6,6 @@ const routes = new Router();
 
 
 routes.get("/health", (req, res) => {
-  const { io } = req;
   return res.send({ message: "Connect Success" });
 });
 

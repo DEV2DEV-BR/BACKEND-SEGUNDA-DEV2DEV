@@ -1,20 +1,29 @@
 const Message = require("../models/Messages");
 const User = require("../models/Users");
+const crypto = require('crypto')
 
 class UserController {
     async sendMessage(req, res) {
         const { userId } = req.params;
-        const { text } = req.body
-        console.log(userId, 'USER ID')
+        const { text, user_destination } = req.body
+
+        if (user_destination === userId) {
+            return res.status(400).json({ message: 'You can"t send a messege for you same' })
+        }
         const message = await Message.create({
             text: text,
-            user_id: userId
+            user_id: userId,
+            user_destination: user_destination
         })
 
         const formattedData = {
             id: message.id,
             text: message.text
         }
+
+        const receiver = crypto.createHash('md5').update(`${user_destination}`).digest("hex");
+
+        req.io.emit(`${receiver}`, 'messageTest')
 
         return res.status(200).json(formattedData);
     }
