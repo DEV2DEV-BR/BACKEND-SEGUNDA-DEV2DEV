@@ -2,7 +2,17 @@ const User = require("../models/Users");
 
 class UserController {
   async insert(req, res) {
-    const user = await User.create(req.body);
+    let user = await User.findOne({
+      where: {
+        email: req.body.email
+      }
+    })
+
+    if (user) {
+      return res.status(400).json({ message: "Já existe um usuário com esse e-mail!" })
+    }
+
+    user = await User.create(req.body);
 
     const formattedData = {
       id: user.id,
@@ -14,15 +24,15 @@ class UserController {
   }
 
   async getUser(req, res) {
-    const { id } = req.params;
+    const { email } = req.params;
 
     const user = await User.findOne({
       where: {
-        id: id,
+        email: email,
       },
     });
     if (!user) {
-      return res.status(404).send({ message: "User not found!" });
+      return res.status(404).json({ message: "Usuário não encontrado!" });
     }
 
     const formattedData = {

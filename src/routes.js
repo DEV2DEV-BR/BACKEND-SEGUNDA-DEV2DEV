@@ -11,10 +11,10 @@ routes.get("/health", (req, res) => {
 
 
 routes.post("/user", UserController.insert);
-routes.get("/user/:id", UserController.getUser);
+routes.get("/user/:email", UserController.getUser);
 routes.get("/users", UserController.getAllUsers);
 
-routes.post("/message/:userId", MessageController.sendMessage);
-routes.get("/messages", MessageController.listAllMessages);
+routes.post("/message/", MessageController.sendMessage);
+routes.get("/messages/:userId/:myId", MessageController.listAllMessages);
 
 module.exports = routes;
